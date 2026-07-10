@@ -337,6 +337,7 @@ fun logout() {
     auth.signOut()
     _isLoggedIn.value = false
 }
+
     // User Profile Actions
     fun updateProfile(
         ign: String,
