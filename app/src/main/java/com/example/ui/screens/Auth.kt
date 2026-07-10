@@ -290,7 +290,7 @@ fun AuthScreen(
                                     value = otpCode,
                                     onValueChange = { otpCode = it },
                                     label = { Text("Enter OTP Code") },
-                                    placeholder = { Text("Use test OTP: 123456") },
+                                    placeholder = { Text("Enter OTP") }
                                     leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "OTP", tint = PrimaryRed) },
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = PrimaryRed,
@@ -308,16 +308,27 @@ fun AuthScreen(
                             EsportsButton(
                                 text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
                                 onClick = {
-                                    if (!otpSent) {
-                                        if (phoneNumber.length >= 10) {
-                                            otpSent = true
-                                        }
-                                    } else {
-                                        viewModel.loginWithPhone(phoneNumber, otpCode)
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            )
+    if (!otpSent) {
+
+        if (phoneNumber.length >= 10) {
+
+            viewModel.sendOtp(
+                activity,
+                "+91$phoneNumber"
+            )
+
+            otpSent = true
+        }
+
+    } else {
+
+        viewModel.loginWithPhone(
+            "+91$phoneNumber",
+            otpCode
+        )
+
+    }
+                                }
 
                             if (otpSent) {
                                 Spacer(modifier = Modifier.height(12.dp))
