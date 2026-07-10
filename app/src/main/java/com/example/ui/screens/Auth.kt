@@ -1,6 +1,7 @@
+package com.example.ui.screens
+
 import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
-package com.example.ui.screens
 import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -290,7 +291,7 @@ fun AuthScreen(
                                     value = otpCode,
                                     onValueChange = { otpCode = it },
                                     label = { Text("Enter OTP Code") },
-                                    placeholder = { Text("Enter OTP") }
+                                    placeholder = { Text("Enter OTP") },
                                     leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "OTP", tint = PrimaryRed) },
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = PrimaryRed,
@@ -306,8 +307,12 @@ fun AuthScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             EsportsButton(
-                                text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
-                                onClick = {
+    text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
+    onClick = {
+        ...
+    },
+    modifier = Modifier.fillMaxWidth()
+)
     if (!otpSent) {
 
         if (phoneNumber.length >= 10) {
@@ -474,7 +479,6 @@ fun AuthScreen(
 
 @Composable
 fun TabButton(
-    val activity = LocalContext.current as Activity
     text: String,isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
