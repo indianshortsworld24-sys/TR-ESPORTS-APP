@@ -263,7 +263,6 @@ fun registerWithEmail(
         }
 }
 fun loginWithPhone(phoneNumber: String, otp: String) {
-fun loginWithPhone(phoneNumber: String, otp: String) {
 
     if (verificationId.isEmpty()) {
         _authError.value = "OTP not sent yet!"
@@ -341,6 +340,7 @@ fun sendOtp(
 fun logout() {
     auth.signOut()
     _isLoggedIn.value = false
+}
     // User Profile Actions
     fun updateProfile(
         ign: String,
