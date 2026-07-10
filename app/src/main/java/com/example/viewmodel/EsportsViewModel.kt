@@ -28,7 +28,7 @@ class EsportsViewModel(application: Application) : AndroidViewModel(application)
     val broadcastChat: StateFlow<List<ChatMessage>>
 
     // Session UI State
-    private val _isLoggedIn = MutableStateFlow(true) // Start logged in for seamless demo UX
+    private val _isLoggedIn = MutableStateFlow(false) // Start logged in for seamless demo UX
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
     private val _authError = MutableStateFlow<String?>(null)
