@@ -14,8 +14,10 @@ import kotlinx.coroutines.launch
 class EsportsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: EsportsRepository
+    
     private val auth = FirebaseAuth.getInstance()
 private val firestore = FirebaseFirestore.getInstance()
+
     // Core Flows from Room DB
     val userProfile: StateFlow<UserProfile?>
     val allTournaments: StateFlow<List<Tournament>>
