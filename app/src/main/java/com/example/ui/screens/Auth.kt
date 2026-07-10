@@ -245,39 +245,27 @@ fun AuthScreen(
                             Spacer(modifier = Modifier.height(24.dp))
 
                             EsportsButton(
-                                text = if (isRegistering) "CREATE ACCOUNT" else "SIGN IN",
-                                onClick = {
-                                    viewModel.loginWithEmail(
-                                        email = email,
-                                        ign = if (isRegistering) inGameName else email.substringBefore("@")
-                                    )
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            )
+    text = if (isRegistering) "CREATE ACCOUNT" else "SIGN IN",
+    onClick = {
 
-                            Spacer(modifier = Modifier.height(16.dp))
+        if (isRegistering) {
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = if (isRegistering) "Already have an account? " else "New to TR Esports? ",
-                                    color = TextGray,
-                                    fontSize = 14.sp
-                                )
-                                Text(
-                                    text = if (isRegistering) "SIGN IN" else "REGISTER NOW",
-                                    color = PrimaryRed,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp,
-                                    modifier = Modifier.clickable { isRegistering = !isRegistering }
-                                )
-                            }
-                        }
-                    }
-                    1 -> {
+            viewModel.registerWithEmail(
+                email = email,
+                password = password,
+                ign = inGameName
+            )
+
+        } else {
+
+            viewModel.loginWithEmail(
+                email = email,
+                password = password
+            )
+
+        }
+    }
+)
                         // Phone OTP Login
                         Column(modifier = Modifier.fillMaxWidth()) {
                             OutlinedTextField(
