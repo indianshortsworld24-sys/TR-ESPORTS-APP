@@ -1,0 +1,6 @@
+{
+  "name": "TR ESPORTS",
+  "description": "Ultimate Free Fire Esports Tournament App",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

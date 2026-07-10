@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "862381988488",
+    "project_id": "tr-esports-df209",
+    "storage_bucket": "tr-esports-df209.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862381988488:android:71942413e4b989f1d11d3d",
+        "android_client_info": {
+          "package_name": "com.aistudio.tresports.qjfxwr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzbrzyFqz-UNqVV-wURFvod6duWyRmF4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
