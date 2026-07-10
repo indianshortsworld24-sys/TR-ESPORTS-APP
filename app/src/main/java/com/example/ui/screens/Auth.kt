@@ -1,5 +1,6 @@
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
 package com.example.ui.screens
-
 import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -462,8 +463,8 @@ fun AuthScreen(
 
 @Composable
 fun TabButton(
-    text: String,
-    isSelected: Boolean,
+    val activity = LocalContext.current as Activity
+    text: String,isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
