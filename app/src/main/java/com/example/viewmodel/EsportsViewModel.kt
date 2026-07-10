@@ -104,73 +104,133 @@ private val firestore = FirebaseFirestore.getInstance()
         _selectedTournamentIdForLeaderboard.value = tournamentId
     }
 
-    // Authentication Actions
-    fun loginWithEmail(email: String, ign: String) {
-        viewModelScope.launch {
-            if (email.isBlank() || ign.isBlank()) {
-                _authError.value = "Credentials cannot be blank!"
-                return@launch
-            }
-            _authError.value = null
-            // Check if user already exists
-            val current = userProfile.value
-            if (current == null) {
-                repository.insertUserProfile(
-                    UserProfile(
-                        email = email,
-                        ign = ign,
-                        walletBalance = 250.0
-                    )
-                )
-            } else {
-                repository.updateUserProfile(
-                    current.copy(email = email, ign = ign)
-                )
-            }
-            _isLoggedIn.value = true
-            repository.addNotification("Welcome Back!", "Logged in successfully as $ign", "ANNOUNCEMENT")
+ // Authentication Actions
+
+fun loginWithEmail(email: String, password: String) {
+
+    if (email.isBlank() || password.isBlank()) {
+        _authError.value = "Email and Password cannot be blank!"
+        return
+    }
+
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnSuccessListener {
+
+            val user = auth.currentUser ?: return@addOnSuccessListener
+
+            firestore.collection("users")
+                .document(user.uid)
+                .get()
+                .addOnSuccessListener { document ->
+
+                    val ign = document.getString("ign") ?: "Player"
+
+                    viewModelScope.launch {
+
+                        val current = userProfile.value
+
+                        if (current == null) {
+                            repository.insertUserProfile(
+                                UserProfile(
+                                    email = email,
+                                    ign = ign,
+                                    walletBalance = 250.0
+                                )
+                            )
+                        } else {
+                            repository.updateUserProfile(
+                                current.copy(
+                                    email = email,
+                                    ign = ign
+                                )
+                            )
+                        }
+
+                        _isLoggedIn.value = true
+                        _authError.value = null
+
+                        repository.addNotification(
+                            "Welcome Back!",
+                            "Logged in successfully as $ign",
+                            "ANNOUNCEMENT"
+                        )
+                    }
+                }
         }
-    }
-
-    fun loginWithGoogle(email: String, name: String) {
-        viewModelScope.launch {
-            _authError.value = null
-            val current = userProfile.value
-            val cleanIgn = name.replace(" ", "_")
-            if (current == null) {
-                repository.insertUserProfile(
-                    UserProfile(email = email, ign = cleanIgn)
-                )
-            } else {
-                repository.updateUserProfile(
-                    current.copy(email = email, ign = cleanIgn)
-                )
-            }
-            _isLoggedIn.value = true
-            repository.addNotification("Google Login Successful", "Welcome to TR Esports, $cleanIgn!", "ANNOUNCEMENT")
+        .addOnFailureListener {
+            _authError.value = it.message
         }
-    }
+}
 
-    fun loginWithPhone(phoneNumber: String, otp: String) {
-        viewModelScope.launch {
-            if (phoneNumber.length < 10 || otp != "123456") {
-                _authError.value = "Invalid OTP! Use test OTP: 123456"
-                return@launch
-            }
-            _authError.value = null
-            val current = userProfile.value
-            if (current == null) {
-                repository.insertUserProfile(UserProfile(bio = "Logged in with phone: $phoneNumber"))
-            }
-            _isLoggedIn.value = true
-            repository.addNotification("Phone Sign-In", "Verification successful!", "ANNOUNCEMENT")
+fun loginWithGoogle(email: String, name: String) {
+
+    val cleanIgn = name.replace(" ", "_")
+
+    viewModelScope.launch {
+
+        val current = userProfile.value
+
+        if (current == null) {
+            repository.insertUserProfile(
+                UserProfile(
+                    email = email,
+                    ign = cleanIgn
+                )
+            )
+        } else {
+            repository.updateUserProfile(
+                current.copy(
+                    email = email,
+                    ign = cleanIgn
+                )
+            )
         }
+
+        _isLoggedIn.value = true
+        _authError.value = null
+
+        repository.addNotification(
+            "Google Login Successful",
+            "Welcome to TR Esports, $cleanIgn!",
+            "ANNOUNCEMENT"
+        )
+    }
+}
+
+fun loginWithPhone(phoneNumber: String, otp: String) {
+
+    if (phoneNumber.length < 10 || otp.isBlank()) {
+        _authError.value = "Invalid Phone Number or OTP"
+        return
     }
 
-    fun logout() {
-        _isLoggedIn.value = false
-    }
+    _isLoggedIn.value = true
+    _authError.value = null
 
+    viewModelScope.launch {
+
+        val current = userProfile.value
+
+        if (current == null) {
+            repository.insertUserProfile(
+                UserProfile(
+                    bio = "Logged in with phone: $phoneNumber"
+                )
+            )
+        }
+
+        repository.addNotification(
+            "Phone Sign-In",
+            "Verification successful!",
+            "ANNOUNCEMENT"
+        )
+    }
+}
+
+fun logout() {
+    auth.signOut()
+    _isLoggedIn.value = false
+}
     // User Profile Actions
     fun updateProfile(
         ign: String,
