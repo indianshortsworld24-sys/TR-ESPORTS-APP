@@ -196,7 +196,63 @@ fun loginWithGoogle(email: String, name: String) {
         )
     }
 }
+fun registerWithEmail(
+    email: String,
+    password: String,
+    ign: String
+) {
 
+    if (email.isBlank() || password.isBlank() || ign.isBlank()) {
+        _authError.value = "All fields are required!"
+        return
+    }
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnSuccessListener {
+
+            val user = auth.currentUser
+
+            if (user != null) {
+
+                val userData = hashMapOf(
+                    "uid" to user.uid,
+                    "email" to email,
+                    "ign" to ign,
+                    "walletBalance" to 250.0
+                )
+
+                firestore.collection("users")
+                    .document(user.uid)
+                    .set(userData)
+                    .addOnSuccessListener {
+
+                        viewModelScope.launch {
+
+                            repository.insertUserProfile(
+                                UserProfile(
+                                    email = email,
+                                    ign = ign,
+                                    walletBalance = 250.0
+                                )
+                            )
+
+                            _isLoggedIn.value = true
+                            _authError.value = null
+
+                            repository.addNotification(
+                                "Account Created",
+                                "Welcome to TR Esports, $ign!",
+                                "ANNOUNCEMENT"
+                            )
+                        }
+                    }
+            }
+        }
+        .addOnFailureListener {
+            _authError.value = it.message
+        }
+}
+fun loginWithPhone(phoneNumber: String, otp: String) {
 fun loginWithPhone(phoneNumber: String, otp: String) {
 
     if (phoneNumber.length < 10 || otp.isBlank()) {
@@ -230,7 +286,6 @@ fun loginWithPhone(phoneNumber: String, otp: String) {
 fun logout() {
     auth.signOut()
     _isLoggedIn.value = false
-}
     // User Profile Actions
     fun updateProfile(
         ign: String,
