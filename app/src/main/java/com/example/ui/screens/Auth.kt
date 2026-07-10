@@ -317,7 +317,7 @@ fun AuthScreen(
 
         if (phoneNumber.length >= 10) {
 
-            viewModel.sendOtp(
+            viewModel.private var verificationId: String? = null
                 activity,
                 "+91$phoneNumber"
             )
