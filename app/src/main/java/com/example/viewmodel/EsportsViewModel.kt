@@ -253,7 +253,6 @@ fun registerWithEmail(
         }
 }
 fun loginWithPhone(phoneNumber: String, otp: String) {
-fun loginWithPhone(phoneNumber: String, otp: String) {
 
     if (phoneNumber.length < 10 || otp.isBlank()) {
         _authError.value = "Invalid Phone Number or OTP"
