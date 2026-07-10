@@ -1,5 +1,10 @@
-package com.example.viewmodel
-
+import android.app.Activity
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import java.util.concurrent.TimeUnit
+package com.e xample.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +22,12 @@ class EsportsViewModel(application: Application) : AndroidViewModel(application)
     
     private val auth = FirebaseAuth.getInstance()
 private val firestore = FirebaseFirestore.getInstance()
-
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import java.util.concurrent.TimeUnit
+    private var verificationId: String = ""
+private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     // Core Flows from Room DB
     val userProfile: StateFlow<UserProfile?>
     val allTournaments: StateFlow<List<Tournament>>
@@ -253,35 +263,81 @@ fun registerWithEmail(
         }
 }
 fun loginWithPhone(phoneNumber: String, otp: String) {
+fun loginWithPhone(phoneNumber: String, otp: String) {
 
-    if (phoneNumber.length < 10 || otp.isBlank()) {
-        _authError.value = "Invalid Phone Number or OTP"
+    if (verificationId.isEmpty()) {
+        _authError.value = "OTP not sent yet!"
         return
     }
 
-    _isLoggedIn.value = true
-    _authError.value = null
+    val credential = PhoneAuthProvider.getCredential(
+        verificationId,
+        otp
+    )
 
-    viewModelScope.launch {
+    auth.signInWithCredential(credential)
+        .addOnSuccessListener {
 
-        val current = userProfile.value
+            _isLoggedIn.value = true
+            _authError.value = null
 
-        if (current == null) {
-            repository.insertUserProfile(
-                UserProfile(
-                    bio = "Logged in with phone: $phoneNumber"
+            viewModelScope.launch {
+
+                val current = userProfile.value
+
+                if (current == null) {
+                    repository.insertUserProfile(
+                        UserProfile(
+                            bio = "Logged in with phone: $phoneNumber"
+                        )
+                    )
+                }
+
+                repository.addNotification(
+                    "Phone Sign-In",
+                    "Verification successful!",
+                    "ANNOUNCEMENT"
                 )
-            )
+            }
         }
-
-        repository.addNotification(
-            "Phone Sign-In",
-            "Verification successful!",
-            "ANNOUNCEMENT"
-        )
-    }
+        .addOnFailureListener {
+            _authError.value = it.message
+        }
 }
+fun sendOtp(
+    activity: Activity,
+    phoneNumber: String
+) {
 
+    val options = PhoneAuthOptions.newBuilder(auth)
+        .setPhoneNumber(phoneNumber)
+        .setTimeout(60L, TimeUnit.SECONDS)
+        .setActivity(activity)
+        .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            override fun onVerificationCompleted(
+                credential: PhoneAuthCredential
+            ) {
+                auth.signInWithCredential(credential)
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                _authError.value = e.message
+            }
+
+            override fun onCodeSent(
+                id: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                verificationId = id
+                resendToken = token
+            }
+
+        })
+        .build()
+
+    PhoneAuthProvider.verifyPhoneNumber(options)
+}
 fun logout() {
     auth.signOut()
     _isLoggedIn.value = false
