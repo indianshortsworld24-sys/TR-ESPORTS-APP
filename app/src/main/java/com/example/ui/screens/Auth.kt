@@ -253,7 +253,13 @@ fun AuthScreen(
         if (!otpSent) {
 
             if (phoneNumber.length >= 10) {
+
                 otpSent = true
+
+                viewModel.sendOtp(
+                    "+91$phoneNumber"
+                )
+
             }
 
         } else {
@@ -305,58 +311,6 @@ fun AuthScreen(
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
-
-                            EsportsButton(
-    text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
-    onClick = {
-        ...
-    },
-    modifier = Modifier.fillMaxWidth()
-)
-if (!otpSent) {
-
-    if (phoneNumber.length >= 10) {
-        otpSent = true
-    }
-
-} else {
-
-    viewModel.loginWithPhone(
-        "+91$phoneNumber",
-        otpCode
-    )
-
-}
-
-    } else {
-
-        viewModel.loginWithPhone(
-            "+91$phoneNumber",
-            otpCode
-        )
-
-    }
-                                }
-
-                            if (otpSent) {
-                                Spacer(modifier = Modifier.height(12.dp))
-                                Text(
-                                    text = "RESEND CODE",
-                                    color = AccentGold,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 12.sp,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable { otpCode = "" }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
 
             // Divider
             Row(
