@@ -313,17 +313,20 @@ fun AuthScreen(
     },
     modifier = Modifier.fillMaxWidth()
 )
-    if (!otpSent) {
+if (!otpSent) {
 
-        if (phoneNumber.length >= 10) {
+    if (phoneNumber.length >= 10) {
+        otpSent = true
+    }
 
-            viewModel.private var verificationId: String? = null
-                activity,
-                "+91$phoneNumber"
-            )
+} else {
 
-            otpSent = true
-        }
+    viewModel.loginWithPhone(
+        "+91$phoneNumber",
+        otpCode
+    )
+
+}
 
     } else {
 
