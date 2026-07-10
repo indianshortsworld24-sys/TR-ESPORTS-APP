@@ -4,7 +4,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import java.util.concurrent.TimeUnit
-package com.e xample.viewmodel
+package com.example.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,10 +22,6 @@ class EsportsViewModel(application: Application) : AndroidViewModel(application)
     
     private val auth = FirebaseAuth.getInstance()
 private val firestore = FirebaseFirestore.getInstance()
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
-import java.util.concurrent.TimeUnit
     private var verificationId: String = ""
 private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     // Core Flows from Room DB
