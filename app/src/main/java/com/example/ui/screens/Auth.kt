@@ -247,26 +247,26 @@ fun AuthScreen(
                             Spacer(modifier = Modifier.height(24.dp))
 
                             EsportsButton(
-    text = if (isRegistering) "CREATE ACCOUNT" else "SIGN IN",
+    text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
     onClick = {
 
-        if (isRegistering) {
+        if (!otpSent) {
 
-            viewModel.registerWithEmail(
-                email = email,
-                password = password,
-                ign = inGameName
-            )
+            if (phoneNumber.length >= 10) {
+                otpSent = true
+            }
 
         } else {
 
-            viewModel.loginWithEmail(
-                email = email,
-                password = password
+            viewModel.loginWithPhone(
+                "+91$phoneNumber",
+                otpCode
             )
 
         }
-    }
+
+    },
+    modifier = Modifier.fillMaxWidth()
 )
                         // Phone OTP Login
                         Column(modifier = Modifier.fillMaxWidth()) {
