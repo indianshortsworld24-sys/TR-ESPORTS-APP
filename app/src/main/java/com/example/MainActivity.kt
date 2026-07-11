@@ -38,8 +38,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 val viewModel: EsportsViewModel = viewModel()
-                val isLoggedIn by viewModel.isLoggedIn.collectAsState()
-                val navController = rememberNavController()
+
+val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+val isAdmin by viewModel.isAdmin.collectAsState()
+
+val navController = rememberNavController()
 
                 NavHost(
                     navController = navController,
