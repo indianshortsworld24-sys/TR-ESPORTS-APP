@@ -177,7 +177,7 @@ fun AuthScreen(
                         // Email Sign In / Register
                     }
                     
-                    1-> }
+                    1-> {
                 
                         Column(modifier = Modifier.fillMaxWidth()) {
                             if (isRegistering) {
