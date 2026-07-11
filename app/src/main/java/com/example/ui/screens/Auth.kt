@@ -45,6 +45,7 @@ fun AuthScreen(
 ) {
     val activity = LocalContext.current as Activity
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+    val isAdmin by viewModel.isAdmin.collectAsState()
     val authError by viewModel.authError.collectAsState()
     
     // Redirect if already logged in
