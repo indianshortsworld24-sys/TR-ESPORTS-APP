@@ -293,7 +293,6 @@ Column(modifier = Modifier.fillMaxWidth())
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
-                }
                 
 EsportsButton(
     text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
