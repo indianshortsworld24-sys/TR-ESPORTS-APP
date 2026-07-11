@@ -39,6 +39,7 @@ import com.example.viewmodel.EsportsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+val activity = LocalContext.current as Activity
 fun AuthScreen(
     viewModel: EsportsViewModel,
     onLoginSuccess: () -> Unit
@@ -254,26 +255,24 @@ fun AuthScreen(
 
         if (!otpSent) {
 
-            if (phoneNumber.length >= 10) {
+    if (phoneNumber.length >= 10) {
 
-                otpSent = true
+        viewModel.sendOtp(
+            activity,
+            "+91$phoneNumber"
+        )
 
-                viewModel.sendOtp(
-                    "+91$phoneNumber"
-                )
+        otpSent = true
+    }
 
-            }
+} else {
 
-        } else {
-
-            viewModel.loginWithPhone(
-                "+91$phoneNumber",
-                otpCode
-            )
+    viewModel.loginWithPhone(
+        "+91$phoneNumber",
+        otpCode
+    )
 
         }
-
-    },
     modifier = Modifier.fillMaxWidth()
 )              
                             OutlinedTextField(
