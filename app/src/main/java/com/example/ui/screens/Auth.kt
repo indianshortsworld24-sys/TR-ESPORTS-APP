@@ -314,8 +314,7 @@ EsportsButton(
                 otpCode
             )
         }
-
-    },
+        
     modifier = Modifier.fillMaxWidth()
 )
             // Divider
