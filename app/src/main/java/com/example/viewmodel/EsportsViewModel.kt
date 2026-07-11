@@ -23,6 +23,12 @@ class EsportsViewModel(application: Application) : AndroidViewModel(application)
     
     private val auth = FirebaseAuth.getInstance()
 private val firestore = FirebaseFirestore.getInstance()
+
+private val adminEmail = "admin@tresports.com"
+
+private val _isAdmin = MutableStateFlow(false)
+val isAdmin: StateFlow<Boolean> = _isAdmin.asStateFlow()
+
     private var verificationId: String = ""
 private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     // Core Flows from Room DB
