@@ -200,6 +200,7 @@ fun loginWithGoogle(email: String, name: String) {
         }
 
         _isLoggedIn.value = true
+        _isAdmin.value = (email == adminEmail)
         _authError.value = null
 
         repository.addNotification(
@@ -343,6 +344,7 @@ fun sendOtp(
 fun logout() {
     auth.signOut()
     _isLoggedIn.value = false
+    _isAdmin.value = false
 }
 
     // User Profile Actions
