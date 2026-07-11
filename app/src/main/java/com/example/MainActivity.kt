@@ -71,9 +71,21 @@ val navController = rememberNavController()
                         AuthScreen(
                             viewModel = viewModel,
                             onLoginSuccess = {
-                                navController.navigate("main") {
-                                    popUpTo("auth") { inclusive = true }
-                                }
+
+    if (isAdmin) {
+
+        navController.navigate("admin") {
+            popUpTo("auth") { inclusive = true }
+        }
+
+    } else {
+
+        navController.navigate("main") {
+            popUpTo("auth") { inclusive = true }
+        }
+
+    }
+
                             }
                         )
                     }
