@@ -317,6 +317,8 @@ EsportsButton(
                 otpCode
             )
         }
+
+    },
         
     modifier = Modifier.fillMaxWidth()
 )
