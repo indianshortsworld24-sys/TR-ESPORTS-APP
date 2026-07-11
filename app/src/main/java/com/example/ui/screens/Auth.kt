@@ -172,8 +172,13 @@ fun AuthScreen(
             // Tab Content
             AnimatedContent(targetState = selectedTab, label = "auth_tabs") { tab ->
                 when (tab) {
+                    
                     0 -> {
                         // Email Sign In / Register
+                    }
+                    
+                    1-> }
+                
                         Column(modifier = Modifier.fillMaxWidth()) {
                             if (isRegistering) {
                                 OutlinedTextField(
@@ -252,7 +257,6 @@ fun AuthScreen(
                         // Phone OTP Login
 Column(modifier = Modifier.fillMaxWidth()) 
 
-                    }
                         
                             OutlinedTextField(
                                 value = phoneNumber,
