@@ -247,36 +247,13 @@ fun AuthScreen(
 
                             Spacer(modifier = Modifier.height(24.dp))
 
+                        }
+                        
                         // Phone OTP Login
 Column(modifier = Modifier.fillMaxWidth()) 
-                   {
-EsportsButton(
-    text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
-    onClick = {
 
-        if (!otpSent) {
-
-            if (phoneNumber.length >= 10) {
-
-                viewModel.sendOtp(
-                    activity,
-                    "+91$phoneNumber"
-                )
-
-                otpSent = true
-            }
-
-        } else {
-
-            viewModel.loginWithPhone(
-                "+91$phoneNumber",
-                otpCode
-            )
-        }
-
-    },
-    modifier = Modifier.fillMaxWidth()
-)
+                    }
+                        
                             OutlinedTextField(
                                 value = phoneNumber,
                                 onValueChange = { phoneNumber = it },
@@ -312,7 +289,35 @@ EsportsButton(
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
+                }
+                
+EsportsButton(
+    text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
+    onClick = {
 
+        if (!otpSent) {
+
+            if (phoneNumber.length >= 10) {
+
+                viewModel.sendOtp(
+                    activity,
+                    "+91$phoneNumber"
+                )
+
+                otpSent = true
+            }
+
+        } else {
+
+            viewModel.loginWithPhone(
+                "+91$phoneNumber",
+                otpCode
+            )
+        }
+
+    },
+    modifier = Modifier.fillMaxWidth()
+)
             // Divider
             Row(
                 modifier = Modifier.fillMaxWidth(),
