@@ -246,7 +246,9 @@ fun AuthScreen(
 
                             Spacer(modifier = Modifier.height(24.dp))
 
-                            EsportsButton(
+                        // Phone OTP Login
+                        Column(modifier = Modifier.fillMaxWidth()) {
+            EsportsButton(
     text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
     onClick = {
 
@@ -273,9 +275,7 @@ fun AuthScreen(
 
     },
     modifier = Modifier.fillMaxWidth()
-)
-                        // Phone OTP Login
-                        Column(modifier = Modifier.fillMaxWidth()) {
+)              
                             OutlinedTextField(
                                 value = phoneNumber,
                                 onValueChange = { phoneNumber = it },
