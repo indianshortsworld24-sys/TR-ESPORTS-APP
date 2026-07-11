@@ -39,11 +39,11 @@ import com.example.viewmodel.EsportsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-val activity = LocalContext.current as Activity
 fun AuthScreen(
     viewModel: EsportsViewModel,
     onLoginSuccess: () -> Unit
 ) {
+    val activity = LocalContext.current as Activity
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
     val authError by viewModel.authError.collectAsState()
     
@@ -248,33 +248,35 @@ fun AuthScreen(
                             Spacer(modifier = Modifier.height(24.dp))
 
                         // Phone OTP Login
-                        Column(modifier = Modifier.fillMaxWidth()) {
-            EsportsButton(
+Column(modifier = Modifier.fillMaxWidth()) 
+                   {
+EsportsButton(
     text = if (otpSent) "VERIFY & LOGIN" else "SEND OTP CODE",
     onClick = {
 
         if (!otpSent) {
 
-    if (phoneNumber.length >= 10) {
+            if (phoneNumber.length >= 10) {
 
-        viewModel.sendOtp(
-            activity,
-            "+91$phoneNumber"
-        )
+                viewModel.sendOtp(
+                    activity,
+                    "+91$phoneNumber"
+                )
 
-        otpSent = true
-    }
+                otpSent = true
+            }
 
-} else {
+        } else {
 
-    viewModel.loginWithPhone(
-        "+91$phoneNumber",
-        otpCode
-    )
-
+            viewModel.loginWithPhone(
+                "+91$phoneNumber",
+                otpCode
+            )
         }
+
+    },
     modifier = Modifier.fillMaxWidth()
-)              
+)
                             OutlinedTextField(
                                 value = phoneNumber,
                                 onValueChange = { phoneNumber = it },
